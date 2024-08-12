@@ -1,0 +1,24 @@
+{%  extends "base.html" %}
+
+{% block content %}
+  <h1 class="mb-4">Transaction #{{ transaction.id }}</h1>
+
+  <table class="table table-striped">
+    <tr>
+      <th class="col-md-2">Date:</th>
+      <td>{{ transaction.date }}</td>
+    </tr>
+    <tr>
+      <th class="col-md-2">Description:</th>
+      <td>{{ transaction.description }}</td>
+    </tr>
+    <tr>
+      <th class="col-md-2">Type:</th>
+      <td>{{ transaction.type | title }}</td>
+    </tr>
+    <tr>
+      <th class="col-md-2">Amount:</th>
+      <td>{{ transaction.amount }}</td>
+    </tr>
+  </table>
+{% endblock %}

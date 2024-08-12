@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 
-@app.route('/', methods=["GET"])
-@app.route('/dashboard', methods=["GET"])
+@app.route('/')
+@app.route('/dashboard')
 def index():  # put application's code here
     page = request.args.get("page") if request.args.get("page") and request.args.get("page").isdigit() else None
     limit = 10
@@ -26,10 +26,8 @@ def index():  # put application's code here
     return render_template('index.html', data=transactions)
 
 
-@app.route('/transactions', methods=["GET"])
-def transaction():
-    transaction_id = request.args.get("id")
-
+@app.route('/transactions/<transaction_id>')
+def transaction(transaction_id):
     if (transaction_id is None) or not transaction_id.isdigit():
         return redirect(url_for('index'))
 

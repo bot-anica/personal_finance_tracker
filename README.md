@@ -14,7 +14,7 @@ Technologies:
 Using this tool you can see all your incomes and expenses.
 
 Dashboard:
-![Dashboard preview](./static/dashboard_preview.png)
+![Dashboard preview](static/img/dashboard_preview.png)
 
 Add transaction page:
-![Add transaction form preview](./static/add_transaction_preview.png)
+![Add transaction form preview](static/img/add_transaction_preview.png)

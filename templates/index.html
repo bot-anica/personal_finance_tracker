@@ -15,24 +15,38 @@
 {% endmacro %}
 
 {% block content %}
-  <p><strong>Your balance: </strong>{{ get_balance(data) }}</p>
+  <p><strong>Your balance: </strong><span class="text-primary">{{ get_balance(data) }}</span></p>
 
   <table class="table table-striped container-fluid">
     <thead>
       <tr>
+        <th>#</th>
         <th class="col-md-2">Date</th>
         <th class="col-md-6">Description</th>
         <th class="col-md-2 text-center">Type</th>
         <th class="col-md-2 text-center">Quantity</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for transaction in data %}
         <tr>
-          <td>{{ "{:%d.%m.%Y}".format(transaction.date) }}</td>
-          <td>{{ transaction.description }}</td>
-          <td class="text-center">{{ transaction.type }}</td>
-          <td class="text-center">{{ transaction.amount }}</td>
+          <td class="align-middle">{{ transaction.id }}</td>
+          <td class="align-middle">{{ "{:%d.%m.%Y}".format(transaction.date) }}</td>
+          <td class="align-middle">{{ transaction.description }}</td>
+          {% if transaction.type == "income" %}
+            <td class="text-center align-middle">
+              <img class="icon income mr-2" src="../static/icons/arrow-up-right-dots-solid.svg" alt="Income">
+              Income
+            </td>
+          {% else %}
+            <td class="text-center align-middle">
+              <img class="icon expense mr-2" src="../static/icons/arrow-up-right-dots-solid.svg" alt="Expense">
+              Expense
+            </td>
+          {% endif %}
+          <td class="text-center align-middle">{{ transaction.amount }}</td>
+          <td class="text-center align-middle"><a class="btn btn-success" href={{ "/transactions/" + transaction.id | string }}>Open</a></td>
         </tr>
       {% endfor %}
     </tbody>
