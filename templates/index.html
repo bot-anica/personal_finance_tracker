@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% macro get_balance(transactions) %}
+  {% set ns = namespace(balance=0) %}
+
+  {% for transaction in transactions %}
+    {% if transaction.type == "income" %}
+      {% set ns.balance = ns.balance + transaction.amount %}
+    {% else %}
+      {% set ns.balance = ns.balance - transaction.amount %}
+    {% endif %}
+  {% endfor %}
+
+  {{ ns.balance }}
+{% endmacro %}
+
+{% block content %}
+  <p><strong>Your balance: </strong>{{ get_balance(data) }}</p>
+
+  <table class="table table-striped container-fluid">
+    <thead>
+      <tr>
+        <th class="col-md-2">Date</th>
+        <th class="col-md-6">Description</th>
+        <th class="col-md-2 text-center">Type</th>
+        <th class="col-md-2 text-center">Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaction in data %}
+        <tr>
+          <td>{{ "{:%d.%m.%Y}".format(transaction.date) }}</td>
+          <td>{{ transaction.description }}</td>
+          <td class="text-center">{{ transaction.type }}</td>
+          <td class="text-center">{{ transaction.amount }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
