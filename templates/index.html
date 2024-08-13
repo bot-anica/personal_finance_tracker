@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}Dashboard{% endblock %}
+
 {% macro get_balance(transactions) %}
   {% set ns = namespace(balance=0) %}
 
@@ -15,7 +17,21 @@
 {% endmacro %}
 
 {% block content %}
-  <p><strong>Your balance: </strong><span class="text-primary">{{ get_balance(data) }}</span></p>
+  <p class="mb-4 text-center"><strong>Your balance: </strong><span class="text-primary font-weight-bold ml-2 h3">{{ get_balance(data) }}</span></p>
+
+  <h2 class="mb-4 text-center">Last 7 days balance</h2>
+
+  <div class="row my-2">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <canvas id="chLine"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
 
   <table class="table table-striped container-fluid">
     <thead>
@@ -23,7 +39,7 @@
         <th>#</th>
         <th class="col-md-2">Date</th>
         <th class="col-md-6">Description</th>
-        <th class="col-md-2 text-center">Type</th>
+        <th class="col-md-2">Type</th>
         <th class="col-md-2 text-center">Quantity</th>
         <th></th>
       </tr>
@@ -35,12 +51,12 @@
           <td class="align-middle">{{ "{:%d.%m.%Y}".format(transaction.date) }}</td>
           <td class="align-middle">{{ transaction.description }}</td>
           {% if transaction.type == "income" %}
-            <td class="text-center align-middle">
+            <td class="align-middle">
               <img class="icon income mr-2" src="../static/icons/arrow-up-right-dots-solid.svg" alt="Income">
               Income
             </td>
           {% else %}
-            <td class="text-center align-middle">
+            <td class="align-middle">
               <img class="icon expense mr-2" src="../static/icons/arrow-up-right-dots-solid.svg" alt="Expense">
               Expense
             </td>
@@ -51,4 +67,16 @@
       {% endfor %}
     </tbody>
   </table>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    const finance_data = []
+
+    {% for transaction in data %}
+      finance_data.push({type: "{{ transaction.type }}", amount: {{ transaction.amount }}})
+    {% endfor %}
+  </script>
+  <script src="static/js/charts.js"></script>
 {% endblock %}
